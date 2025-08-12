@@ -1,3 +1,4 @@
+//Menu program
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -107,7 +108,7 @@ int main() {
     int choice;
 
     do {
-        printf("\n——MENU——\n");
+        printf("\nâ€”â€”MENUâ€”â€”\n");
         printf("1. CREATE\n");
         printf("2. DISPLAY\n");
         printf("3. INSERT\n");
@@ -149,3 +150,4 @@ int main() {
 
     return 0;
 }
+
