@@ -3,59 +3,58 @@ using namespace std;
 #define MAXLEN 100
 
 class Stack {
-
-private:
-	int element[MAXLEN];
-	int topIndex;
-	
-public:
-	Stack() {
-		topIndex = -1;
-	}
-
-	void push(int x) {
-		if (isFull()) {
-			cout << "OVERFLOW" << endl;
-		} else {
-			element[topIndex++] = x;
+	private:
+		int element[MAXLEN];
+		int topIndex;
+		
+	public:
+		Stack() {
+			topIndex = -1;
 		}
-	}
 
-	void pop() {
-		if (isEmpty()) {
-			cout << "UNDERFLOW" << endl;
-		} else {
-			topIndex--;
-		}
-	}
-
-	int top() {
-		if (isEmpty()) {
-			cout << "Empty stack" << endl;
-			return -1;
-		} else {
-			return element[topIndex];
-		}
-	}
-
-	bool isEmpty() {
-		return topIndex == -1;
-	}
-
-	bool isFull() {
-		return topIndex == MAXLEN - 1;
-	}
-
-	void print() {
-		if (isEmpty()) {
-			cout << "Stack is empty." << endl;
-		} else {
-			for (int i = topIndex; i >= 0; i--) {
-				cout << element[i] << " ";
+		void push(int x) {
+			if (isFull()) {
+				cout << "OVERFLOW" << endl;
+			} else {
+				element[topIndex++] = x;
 			}
-			cout << endl;
 		}
-	}
+
+		void pop() {
+			if (isEmpty()) {
+				cout << "UNDERFLOW" << endl;
+			} else {
+				topIndex--;
+			}
+		}
+
+		int top() {
+			if (isEmpty()) {
+				cout << "Empty stack" << endl;
+				return -1;
+			} else {
+				return element[topIndex];
+			}
+		}
+
+		bool isEmpty() {
+			return topIndex == -1;
+		}
+
+		bool isFull() {
+			return topIndex == MAXLEN - 1;
+		}
+
+		void print() {
+			if (isEmpty()) {
+				cout << "Stack is empty." << endl;
+			} else {
+				for (int i = topIndex; i >= 0; i--) {
+					cout << element[i] << " ";
+				}
+				cout << endl;
+			}
+		}
 };
 
 int main() {
