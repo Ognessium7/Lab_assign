@@ -1,61 +1,76 @@
-#include <iostream>
-#include <stack>
+#include<iostream>
+#include<vector>
 using namespace std;
 
-struct Node {
-    int data;
+//Write a program to reverse a linked list. 
+
+
+struct Node{
+    int val;
     Node* next;
+    Node(int v): val(v), next(nullptr){}
+    Node():val(0), next(nullptr){}
 };
 
-Node* reverseLL(Node* head) {
-    if (head == nullptr)
+struct List{
+    Node* head;
+    List():head(nullptr){}
+    List(Node* m):head(m){}
+};
+
+
+
+List* createLL(vector<int> arr){
+    if(arr.size() == 0){
+        cout<<"Empty list!"<<endl;
         return nullptr;
-
-    stack<Node*> s;
-    Node* temp = head;
-
-    while (temp != nullptr) {
-        s.push(temp);
+    }
+    List* l = new List(new Node(arr[0]));
+    Node* temp = l->head;
+    for(int i = 1;i<arr.size();i++){
+        Node* n = new Node(arr[i]);
+        temp->next = n;
         temp = temp->next;
     }
-
-    head = s.top();
-    s.pop();
-    temp = head;
-
-    while (!s.empty()) {
-        temp->next = s.top();
-        s.pop();
-        temp = temp->next;
-    }
-
-    temp->next = nullptr;
-    return head;
+    return l;
 }
 
-void display(Node* head) {
-    Node* temp = head;
-    while (temp != nullptr) {
-        cout << temp->data << " -> ";
+void displayLL(List* l){
+    Node* temp = l->head;
+    while(temp!=nullptr){
+        cout<<temp->val<<"->";
         temp = temp->next;
     }
-    cout << "NULL\n";
+    cout<<"nullptr"<<endl;
 }
 
-int main() {
-    Node* head = new Node{1, nullptr};
-    head->next = new Node{2, nullptr};
-    head->next->next = new Node{3, nullptr};
-    head->next->next->next = new Node{4, nullptr};
-    head->next->next->next->next = new Node{5, nullptr};
 
-    cout << "Original List:\n";
-    display(head);
+void reverseLL(List* l){
+    if(l->head->next == nullptr){
+        return;
+    }
+    Node* temp, *prev, *a;
+    temp = prev = l->head;
+    while(temp!=nullptr){
+        if(temp == l->head){
+            temp = temp->next;
+            prev->next = nullptr;
+        }
+        else{
+            Node* t = prev;
+            a = prev = temp;
+            temp = temp->next;
+            prev->next = t;
+        }
+    }
+    l->head = a;
+}
 
-    head = reverseUsingStack(head);
 
-    cout << "Reversed List (using stack):\n";
-    display(head);
-
+int main(){
+    vector<int> a = {1,2,3,4,5};
+    List* l = createLL(a);
+    reverseLL(l);
+    displayLL(l);
     return 0;
 }

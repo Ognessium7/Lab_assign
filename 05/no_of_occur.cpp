@@ -1,89 +1,90 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include<iostream>
+#include<vector>
+using namespace std;
 
 
-struct Node {
-    int data;
-    struct Node* next;
+/*Write a program to count the number of occurrences of a given key in a singly linked list and
+then delete all the occurrences. */ 
+
+
+
+struct Node{
+    int val;
+    Node* next;
+    Node(int v): val(v), next(nullptr){}
+    Node():val(0), next(nullptr){}
+};
+
+struct List{
+    Node* head;
+    List():head(nullptr){}
+    List(Node* m):head(m){}
 };
 
 
-struct Node* newNode(int data) {
-    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
-    temp->data = data;
-    temp->next = NULL;
-    return temp;
-}
 
-
-void insertEnd(struct Node** head, int data) {
-    struct Node* temp = newNode(data);
-    if (*head == NULL) {
-        *head = temp;
-        return;
+List* createLL(vector<int> arr){
+    if(arr.size() == 0){
+        cout<<"Empty list!"<<endl;
+        return nullptr;
     }
-    struct Node* curr = *head;
-    while (curr->next != NULL)
-        curr = curr->next;
-    curr->next = temp;
+    List* l = new List(new Node(arr[0]));
+    Node* temp = l->head;
+    for(int i = 1;i<arr.size();i++){
+        Node* n = new Node(arr[i]);
+        temp->next = n;
+        temp = temp->next;
+    }
+    return l;
+}
+
+void displayLL(List* l){
+    Node* temp = l->head;
+    while(temp!=nullptr){
+        cout<<temp->val<<"->";
+        temp = temp->next;
+    }
+    cout<<"nullptr"<<endl;
 }
 
 
-int deleteKey(struct Node** head, int key) {
-    struct Node* curr = *head;
-    struct Node* prev = NULL;
-    int count = 0;
-
-    while (curr != NULL) {
-        if (curr->data == key) {
-            count++;
-            if (prev == NULL) {
-                *head = curr->next;
-                free(curr);
-                curr = *head;
-            } else {
-                prev->next = curr->next;
-                free(curr);
-                curr = prev->next;
+int count_delete_key(List* l, int key){
+    Node* temp = l->head;
+    int itr = 0;
+    Node* prev = temp;
+    while(temp!=nullptr){
+        if(temp->val == key){
+            itr++;
+            if(temp == l->head){
+                l->head = temp->next;
+                prev = temp->next;
+                Node* n = temp;
+                temp = temp->next;
+                delete n;
             }
-        } else {
-            prev = curr;
-            curr = curr->next;
+            else{
+                prev->next = temp->next;
+                Node* n = temp;
+                temp = temp->next;
+                delete n;
+            }
+        }
+        else{
+            prev = temp;
+            temp = temp->next;
         }
     }
-    return count;
+    return itr;
 }
 
 
-void printList(struct Node* head) {
-    struct Node* curr = head;
-    while (curr != NULL) {
-        printf("%d", curr->data);
-        if (curr->next != NULL)
-            printf("->");
-        curr = curr->next;
-    }
-    printf("\n");
-}
-
-int main() {
-    struct Node* head = NULL;
-    int arr[] = {1, 2, 1, 2, 1, 3, 1};
-    int n = sizeof(arr) / sizeof(arr[0]);
-    int key = 1;
 
 
-    for (int i = 0; i < n; i++)
-        insertEnd(&head, arr[i]);
 
-    printf("Original List: ");
-    printList(head);
-
-    int count = deleteKey(&head, key);
-
-    printf("Count: %d\n", count);
-    printf("Updated List: ");
-    printList(head);
-
+int main(){
+    vector<int> a = {1,1,1,1,1,5,4,6,7,4,3,1,1};
+    List* l = createLL(a);
+    cout<<count_delete_key(l, 1)<<endl;
+    displayLL(l);
     return 0;
 }

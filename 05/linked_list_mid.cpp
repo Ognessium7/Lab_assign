@@ -1,40 +1,68 @@
-
-#include <iostream>
+#include<iostream>
+#include<vector>
 using namespace std;
 
-struct Node {
-    int data;
+//Write a program to find the middle of a linked list. 
+
+
+struct Node{
+    int val;
     Node* next;
+    Node(int v): val(v), next(nullptr){}
+    Node():val(0), next(nullptr){}
 };
 
-void findMiddle(Node* head) {
-    if (head == nullptr) {
-        cout << "List is empty.\n";
-        return;
-    }
+struct List{
+    Node* head;
+    List():head(nullptr){}
+    List(Node* m):head(m){}
+};
 
-    int length = 0;
-    Node* temp = head;
-    while (temp != nullptr) {
-        length++;
+
+
+List* createLL(vector<int> arr){
+    if(arr.size() == 0){
+        cout<<"Empty list!"<<endl;
+        return nullptr;
+    }
+    List* l = new List(new Node(arr[0]));
+    Node* temp = l->head;
+    for(int i = 1;i<arr.size();i++){
+        Node* n = new Node(arr[i]);
+        temp->next = n;
         temp = temp->next;
     }
-
-    int mid = length / 2;
-    temp = head;
-    for (int i = 0; i < mid; i++)
-        temp = temp->next;
-
-    cout << "Middle element: " << temp->data << endl;
+    return l;
 }
 
-int main() {
-    Node* head = new Node{1, nullptr};
-    head->next = new Node{2, nullptr};
-    head->next->next = new Node{3, nullptr};
-    head->next->next->next = new Node{4, nullptr};
-    head->next->next->next->next = new Node{5, nullptr};
+void displayLL(List* l){
+    Node* temp = l->head;
+    while(temp!=nullptr){
+        cout<<temp->val<<"->";
+        temp = temp->next;
+    }
+    cout<<"nullptr"<<endl;
+}
 
-    findMiddle(head);
+int middleElement(List* l){
+    Node* temp = l->head;
+    int size = 0;
+    while(temp!=nullptr){
+        size++;
+        temp = temp->next;
+    }
+    size/=2;
+    temp = l->head;
+    while(size!=0){
+        temp = temp->next;
+        size--;
+    }
+    return temp->val;
+}
+
+int main(){
+    vector<int> a = {1,2,3,4,5};
+    List* l = createLL(a);
+    cout<<middleElement(l)<<endl;
     return 0;
 }
