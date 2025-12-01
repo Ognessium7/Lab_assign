@@ -1,72 +1,52 @@
-#include <iostream>
-#include <vector>
-
+#include<iostream>
+#include<vector>
 using namespace std;
 
-void merge(vector<int>& arr, int left, int mid, int right) {
-    int n1 = mid - left + 1;
-    int n2 = right - mid;
+void merge(vector<int>& arr, int low, int mid, int high) {
+    int left = low;
+    int right = mid + 1;
+    vector<int> temp;
 
-    vector<int> L(n1);
-    vector<int> R(n2);
-
-    for (int i = 0; i < n1; i++)
-        L[i] = arr[left + i];
-    for (int j = 0; j < n2; j++)
-        R[j] = arr[mid + 1 + j];
-
-    int i = 0;
-    int j = 0;
-    int k = left;
-
-    while (i < n1 && j < n2) {
-        if (L[i] <= R[j]) {
-            arr[k] = L[i];
-            i++;
+    while (left <= mid && right <= high) {
+        if (arr[left] <= arr[right]) {
+            temp.push_back(arr[left]);
+            left++;
         } else {
-            arr[k] = R[j];
-            j++;
+            temp.push_back(arr[right]);
+            right++;
         }
-        k++;
     }
-
-    while (i < n1) {
-        arr[k] = L[i];
-        i++;
-        k++;
+    while (left <= mid) {
+        temp.push_back(arr[left]);
+        left++;
     }
-
-    while (j < n2) {
-        arr[k] = R[j];
-        j++;
-        k++;
+    while (right <= high) {
+        temp.push_back(arr[right]);
+        right++;
+    }
+    for (int i = low; i <= high; i++) {
+        arr[i] = temp[i - low];
     }
 }
 
-void mergeSort(vector<int>& arr, int left, int right) {
-    if (left >= right) {
-        return;
-    }
-    int mid = left + (right - left) / 2;
-    mergeSort(arr, left, mid);
-    mergeSort(arr, mid + 1, right);
-    merge(arr, left, mid, right);
+void mergeSort(vector<int>& arr, int low, int high) {
+    if (low >= high) return;
+
+    int mid = (low + high) / 2;
+    mergeSort(arr, low, mid);
+    mergeSort(arr, mid + 1, high);
+    merge(arr, low, mid, high);
 }
 
-void printArray(vector<int>& arr) {
-    for (int i = 0; i < arr.size(); i++)
-        cout << arr[i] << " ";
-    cout << endl;
+void print_vec(const vector<int>& arr) {
+    cout << "{";
+    for (int v : arr) cout << v << ", ";
+    cout << "}" << endl;
 }
 
 int main() {
-    vector<int> arr = {12, 11, 13, 5, 6, 7};
-    cout << "Given array is \n";
-    printArray(arr);
-
-    mergeSort(arr, 0, arr.size() - 1);
-
-    cout << "\nSorted array is \n";
-    printArray(arr);
+    vector<int> arr = {1,2,6,4,2,0,3,2,1,7,6,5};
+    mergeSort(arr, 0, 11);
+    print_vec(arr);
     return 0;
 }
